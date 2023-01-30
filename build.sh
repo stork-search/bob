@@ -1,9 +1,9 @@
 #!/bin/sh
 # shellcheck shell=dash
 
-curl https://sh.rustup.rs -sSf | sh -s -- -vy
+cargo -V || curl https://sh.rustup.rs -sSf | sh -s -- -vy
 
-wget https://github.com/jameslittle230/stork/archive/refs/heads/master.zip -o stork-master.zip
+curl https://github.com/jameslittle230/stork/archive/refs/heads/master.zip -o stork-master.zip
 unzip stork-master.zip
 
 cd stork-master
