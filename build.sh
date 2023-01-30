@@ -1,21 +1,24 @@
 #!/bin/sh
 
-set -eou pipefail
-
 rm -f stork.zip
 rm -rf unzip-dir
 
 cargo -V || curl https://sh.rustup.rs -sSf | sh -s -- -vy
+source "$HOME/.cargo/env"
+
+apt && sudo apt install build-essential zip unzip libssl-dev pkg-config -y
+yum && yum install zip unzip libssl-dev pkg-config -y
+
 just --version || cargo install just
 
 LOCATION=$(curl -s https://api.github.com/repos/jameslittle230/stork/releases/latest \
 | grep "tag_name" \
 | awk '{print "https://github.com/jameslittle230/stork/archive/" substr($2, 2, length($2)-3) ".zip"}') \
-; curl -L -o stork.zip $LOCATION
+; curl -L -o stork.zip "$LOCATION"
 
 unzip stork.zip -d unzip-dir
-cd unzip-dir
-cd $(ls)
+cd unzip-dir || exit
+cd "$(ls)" || exit
 
 pwd
 just build-indexer
@@ -27,3 +30,6 @@ rm -rf unzip-dir
 rm -f stork.zip
 
 ls
+echo "Success"
+echo "Run the following command on your local machine:"
+echo "scp -i <keyfile>" $(whoami)"@"$(curl -s icanhazip.com)":"$(pwd)"/stork ."
