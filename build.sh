@@ -6,8 +6,8 @@ rm -rf unzip-dir
 cargo -V || curl https://sh.rustup.rs -sSf | sh -s -- -vy
 source "$HOME/.cargo/env"
 
-apt && sudo apt install build-essential zip unzip libssl-dev pkg-config -y
-yum && yum install zip unzip libssl-dev pkg-config -y
+which apt && sudo apt install build-essential zip unzip libssl-dev pkg-config -y
+which yum && sudo yum install gcc zip unzip openssl-devel -y
 
 just --version || cargo install just
 
